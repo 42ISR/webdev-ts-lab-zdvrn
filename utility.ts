@@ -58,8 +58,50 @@ const menuItem: IMenuItem = {
   },
 }
 
+function updateOrder(order: IOrder, patch: Partial<IOrder>): IOrder {
+  return { ...order, ...patch }
+}
+
+const updatedOrder = updateOrder(orders[0], { status: "done" })
+
+console.log(updatedOrder)
+console.log(orders[0].status)
 
 
-// function updateOrder(order: IOrder, patch: Partial<IOrder>): IOrder {
+function orderSummary(order: IOrder): Pick<IOrder, "id" | "status"> {
+  return { id: order.id, status: order.status }
+}
 
-// }
+console.log(orderSummary(orders[0]))
+
+
+
+function publicOrder(order: IOrder): Omit<IOrder, "customer"> {
+  const { customer, ...orderWithoutCustomer } = order
+  return orderWithoutCustomer
+}
+
+console.log(publicOrder(orders[0]))
+
+
+
+function indexOrdersById(orders: IOrder[]): Record<string, IOrder> {
+  const ordersById: Record<string, IOrder> = {}
+
+  for (const order of orders) {
+    ordersById[order.id] = order
+  }
+
+  return ordersById
+}
+
+console.log(Object.keys(indexOrdersById(orders)))
+
+
+
+function freezeItem(item: IMenuItem): Readonly<IMenuItem> {
+  return item
+}
+
+const readonlyItem = freezeItem(menuItem)
+console.log(readonlyItem.label())
